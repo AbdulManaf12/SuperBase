@@ -17,13 +17,22 @@ function App() {
     });
     return () => subscription.unsubscribe();
   }, []);
-  
+
+  const signOut = async () => {
+    const { error } = await superbase.auth.signOut();
+    if (error) console.log("Error signing out:", error.message);
+  };
   if (!session) {
     return (
       <Auth supabaseClient={superbase} appearance={{ theme: ThemeSupa }} />
     );
   } else {
-    return <div>Logged in with {session?.user?.email}</div>;
+    return (
+      <div>
+        <h1> Logged in with {session?.user?.email}</h1>
+        <button onClick={signOut}>Signout</button>
+      </div>
+    );
   }
 }
 
